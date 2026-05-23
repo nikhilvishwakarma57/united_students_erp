@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>United Institute of Management - Login</title>
+
+
+<link rel="stylesheet" href="stylesheet.css"></head>
+  <form id="phoneForm">
+    <input type="tel" id="phone" placeholder="Enter phone (e.g., +919876543210)" required>
+    <button type="submit">Send OTP</button>
+  </form>
+  <form id="otpForm" style="display:none;">
+    <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6">
+    <button type="submit">Verify & Login</button>
+    <div id="timer"></div>
+  </form>
+  <script src="script.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body {
+      height: 100vh;
+      background: linear-gradient(to right, #1c92d2, #f2fcfe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: #fff;
+      width: 380px;
+      padding: 40px 30px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      text-align: center;
+      position: relative;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: #1c92d2;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: #fff;
+      font-weight: bold;
+    }
+    h2 {
+      color: #1c92d2;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+    .input-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 11px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+    .input-group input:focus {
+      border-color: #1c92d2;
+      box-shadow: 0 0 5px rgba(28,146,210,0.5);
+    }
+    button {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 6px;
+      background: #1c92d2;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 4px;
+    }
+    button:hover { background: #0b6fa4; }
+    .forgot {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .forgot a { text-decoration: none; color: #1c92d2; }
+    .forgot a:hover { text-decoration: underline; }
+    .register-text {
+      margin-top: 14px;
+      font-size: 13px;
+    }
+    .register-text button {
+      width: auto;
+      padding: 7px 16px;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    /* Floating registration modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: #fff;
+      width: 90%;
+      max-width: 360px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      padding: 20px 22px 22px;
+      position: relative;
+      animation: pop 0.18s ease-out;
+    }
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #555;
+      font-weight: bold;
+    }
+    .modal h3 {
+      text-align: center;
+      margin-bottom: 16px;
+      color: #1c92d2;
+      font-size: 18px;
+    }
+    .small-note {
+      text-align: center;
+      font-size: 11px;
+      margin-top: 6px;
+      color: #555;
+    }
+
+    @media(max-width: 420px) {
+      .login-box {
+        width: 92%;
+        padding: 30px 22px 24px;
+      }
+    }
+  </style>
+
+  <script>
+    // ===== SIMPLE "DATABASE" USING localStorage =====
+    function getUsers() {
+      const data = localStorage.getItem("users");
+      return data ? JSON.parse(data) : [];
+    }
+
+    function setUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    // ===== LOGIN =====
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("login-email").value.trim();
+      const pass = document.getElementById("login-password").value;
+
+      if (!email || !pass) {
+        alert("Please fill both email and password.");
+        return;
+      }
+
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.password === pass);
+
+      if (user) {
+        localStorage.setItem("login", "true");
+        localStorage.setItem("currentUser", email);
+        window.location.href = "index.html";
+      } else {
+        alert("Invalid email or password.");
+      }
+    }
+
+    // ===== REGISTRATION (MODAL FORM) =====
+    function openRegister() {
+      document.getElementById("reg-modal-overlay").classList.add("show");
+    }
+
+    function closeRegister() {
+      document.getElementById("reg-modal-overlay").classList.remove("show");
+    }
+
+    function handleRegister(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("reg-email").value.trim();
+      const username = document.getElementById("reg-username").value.trim();
+      const pass = document.getElementById("reg-password").value;
+      const cpass = document.getElementById("reg-confirm").value;
+
+      if (!email || !username || !pass || !cpass) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      if (!email.includes("@") || !email.includes(".")) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      if (pass.length < 4) {
+        alert("Password must be at least 4 characters.");
+        return;
+      }
+
+      if (pass !== cpass) {
+        alert("Password and Confirm Password do not match.");
+        return;
+      }
+
+      let users = getUsers();
+      const exists = users.find(u => u.email === email);
+
+      if (exists) {
+        alert("This email is already registered. Please login.");
+        return;
+      }
+
+      // Save new user
+      users.push({ email: email, username: username, password: pass });
+      setUsers(users);
+
+      // Auto-login after registration
+      localStorage.setItem("login", "true");
+      localStorage.setItem("currentUser", email);
+
+      alert("Registration successful! Logged in as " + username);
+      // Close modal
+      closeRegister();
+      // Redirect to home (index.html)
+      window.location.href = "index.html";
+    }
+
+    // Modal ko bahar click se band karne ke liye
+    window.addEventListener("click", function(e) {
+      const overlay = document.getElementById("reg-modal-overlay");
+      if (e.target === overlay) {
+        closeRegister();
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="login-box">
+    <div class="logo">UIM</div>
+    <h2>United Institute of Management</h2>
+
+    <!-- LOGIN FORM -->
+    <form onsubmit="handleLogin(event)">
+      <div class="input-group">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" placeholder="Enter your email" required>
+      </div>
+      <div class="input-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit">Login</button>
+      <p class="forgot"><a href="#">Forgot Password?</a></p>
+    </form>
+
+    <!-- REGISTER BUTTON (same page) -->
+    <div class="register-text">
+      <span>New here?</span><br>
+      <button type="button" onclick="openRegister()">Create a new account</button>
+    </div>
+  </div>
+
+  <!-- FLOATING REGISTRATION MODAL -->
+  <div id="reg-modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <span class="modal-close" onclick="closeRegister()">×</span>
+      <h3>New Registration</h3>
+      <form onsubmit="handleRegister(event)">
+        <div class="input-group">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+          <label for="reg-username">Username</label>
+          <input type="text" id="reg-username" placeholder="Enter username" required>
+        </div>
+        <div class="input-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="Enter password" required>
+        </div>
+        <div class="input-group">
+          <label for="reg-confirm">Confirm Password</label>
+          <input type="password" id="reg-confirm" placeholder="Confirm password" required>
+        </div>
+        <button type="submit">Register & Login</button>
+        <p class="small-note">
+          Demo only: Data is stored in browser localStorage, not in real server database.
+        </p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

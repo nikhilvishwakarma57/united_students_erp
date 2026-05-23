@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>United Institute of Management (FUGS) - Dashboard</title>
+
+  <!-- Login check -->
+  <script>
+    if (localStorage.getItem("login") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <link rel="stylesheet" href="stylesheet.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google icons -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+</head>
+
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="logo-area">
+      <div class="logo-circle">U</div>
+      <div class="logo-text">
+        <h1>UNITED INSTITUTE OF MANAGEMENT (FUGS)</h1>
+        <p>Academic Year 2023–2026</p>
+      </div>
+    </div>
+    <div class="user-mini">
+      <span class="material-symbols-outlined">account_circle</span>
+    </div>
+  </header>
+
+  <!-- Page container -->
+  <main class="page">
+
+    <!-- First row cards -->
+    <section class="cards-row">
+      <article class="card card-blue clickable" id="card-attendance">
+        <h2>My Attendance</h2>
+        <p class="big-text">Ab - 0 | TL - 0</p>
+        <button>Details (0%)</button>
+      </article>
+
+      <article class="card card-teal clickable" id="card-marks">
+        <h2>My Marks</h2>
+        <p class="big-text">Assignment / Exam</p>
+        <button>Click Here to view</button>
+      </article>
+    </section>
+
+    <!-- Second row cards -->
+    <section class="cards-row">
+      <article class="card card-purple clickable" id="card-fee">
+        <h2>Fee</h2>
+        <p class="big-text">Fee Details</p>
+        <button>Click Here for details</button>
+      </article>
+
+      <article class="card card-red clickable" id="card-library">
+        <h2>Library</h2>
+        <p class="big-text">Circulation / BookBank</p>
+        <small>(Late Fine - Rs. 0/-)</small>
+        <button>Click Here to view details</button>
+      </article>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="panel clickable" id="panel-mission">
+      <div class="panel-header">
+        <h3>Our Mission &amp; Vision</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          To provide quality education and holistic development for students by
+          promoting academic excellence, ethical values, and lifelong learning.
+        </p>
+      </div>
+    </section>
+
+    <!-- Info at a glance -->
+    <section class="panel" id="panel-info">
+      <div class="panel-header">
+        <h3>Info At A Glance</h3>
+      </div>
+      <div class="panel-body">
+        <ul class="info-list">
+          <li class="clickable info-item" data-key="attendance">
+            <span>My Attendance</span><span>0 %</span>
+          </li>
+          <li class="clickable info-item" data-key="total-lecture">
+            <span>Total Lecture</span><span>0</span>
+          </li>
+          <li class="clickable info-item" data-key="total-present">
+            <span>Total Present</span><span>0</span>
+          </li>
+          <li class="clickable info-item" data-key="total-absent">
+            <span>Total Absent</span><span>0</span>
+          </li>
+          <li class="clickable info-item" data-key="library-fine">
+            <span>My Library</span><span>Fine Rs 0</span>
+          </li>
+          <li>
+            <span>College Wall</span>
+            <button class="pill-btn" id="btn-college-wall">Post Here</button>
+          </li>
+          <li>
+            <span>Online exam</span><span class="pill-badge">OLT</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Notice Board -->
+    <section class="panel" id="panel-notice">
+      <div class="panel-header">
+        <h3>Notice Board</h3>
+        <select id="notice-filter">
+          <option>All Notice</option>
+          <option>Departmental</option>
+        </select>
+      </div>
+      <div class="panel-body tabs">
+        <button class="tab active" data-tab="notice">Notice Board</button>
+        <button class="tab" data-tab="dept">Departmental Notices</button>
+        <div class="tab-content" id="tab-notice">
+          <p>No new notices.</p>
+        </div>
+        <div class="tab-content hidden" id="tab-dept">
+          <p>No departmental notices.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Corporate Relations Panel -->
+    <section class="panel" id="panel-cr">
+      <div class="panel-header">
+        <h3>Corporate Relations Panel</h3>
+      </div>
+      <div class="panel-body grid-4">
+        <div class="icon-link clickable" data-section="job-inbox">
+          <span class="material-symbols-outlined">mail</span>
+          <p>Job Inbox</p>
+        </div>
+        <div class="icon-link clickable" data-section="training-inbox">
+          <span class="material-symbols-outlined">school</span>
+          <p>Training Inbox</p>
+        </div>
+        <div class="icon-link clickable" data-section="info-form">
+          <span class="material-symbols-outlined">description</span>
+          <p>Information Form</p>
+        </div>
+        <div class="icon-link clickable" data-section="cr-wall">
+          <span class="material-symbols-outlined">chat</span>
+          <p>CR Wall</p>
+        </div>
+        <div class="icon-link clickable" data-section="upload-docs">
+          <span class="material-symbols-outlined">drive_folder_upload</span>
+          <p>Upload Documents</p>
+        </div>
+        <div class="icon-link clickable" data-section="uploaded-docs">
+          <span class="material-symbols-outlined">folder_open</span>
+          <p>Uploaded Documents</p>
+        </div>
+        <div class="icon-link clickable" data-section="placement">
+          <span class="material-symbols-outlined">work</span>
+          <p>Placement Delegation</p>
+        </div>
+        <div class="icon-link clickable" data-section="exam-score">
+          <span class="material-symbols-outlined">monitoring</span>
+          <p>Exam Score Card</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interview questions -->
+    <section class="panel" id="panel-interview">
+      <div class="panel-header">
+        <h3>Interview questions for Infosys</h3>
+      </div>
+      <div class="panel-body grid-4">
+        <div class="icon-link clickable" data-topic="c">
+          <span class="material-symbols-outlined">code</span>
+          <p>C</p>
+        </div>
+        <div class="icon-link clickable" data-topic="java">
+          <span class="material-symbols-outlined">code</span>
+          <p>Java</p>
+        </div>
+        <div class="icon-link clickable" data-topic="hr">
+          <span class="material-symbols-outlined">badge</span>
+          <p>HR</p>
+        </div>
+        <div class="icon-link clickable" data-topic="se">
+          <span class="material-symbols-outlined">architecture</span>
+          <p>Software Engineering</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    Copyright ©2019-2020 Digital Dreams Systems. All rights reserved.
+  </footer>
+
+  <!-- Chatbot toggle button -->
+  <button class="chatbot-toggler">
+    <span class="material-symbols-rounded">mode_comment</span>
+    <span class="material-symbols-rounded">close</span>
+  </button>
+
+  <!-- Chatbot window -->
+  <div class="chatbot">
+    <header>
+      <h2>UIM Helper Bot</h2>
+      <span class="close-btn material-symbols-outlined">close</span>
+    </header>
+    <ul class="chatbox" id="chatbox">
+      <li class="chat incoming">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <p>Hi! I can show some students' details. Type "students" or click the list button below.</p>
+      </li>
+    </ul>
+    <div class="chat-input">
+      <textarea id="chat-input-text"
+                placeholder="Ask anything about your dashboard..."
+                spellcheck="false" required></textarea>
+      <span id="send-btn" class="material-symbols-rounded">send</span>
+    </div>
+  </div>
+
+  <!-- JS last me -->
+  <script src="script.js"></script>
+</body>
+</html>
